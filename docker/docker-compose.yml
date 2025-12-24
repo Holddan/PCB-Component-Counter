@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  pcb-ai:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: pcb_hybrid_lab
+    # MOUNT VOLUME: Ánh xạ thư mục hiện tại (.) vào /app trong container
+    volumes:
+      - ..:/app
+    # BẬT GPU: Cấu hình để Docker dùng được Card màn hình
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    # Giữ container luôn chạy để bạn có thể exec vào
+    tty: true
+    stdin_open: true
